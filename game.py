@@ -36,6 +36,8 @@ class Board:
     self.board[(0,0)] = STARTING_PIECE
 
   def display(self):
+    """ now returns a string"""
+    result = []
     horizontal_bounds, vertical_bounds = self.get_bounds()
     min_x, max_x = horizontal_bounds
     min_y, max_y = vertical_bounds
@@ -53,7 +55,9 @@ class Board:
       # zip to aggregate each of the top, middle, bottom rows
       row_lines = zip(*[str(tile).split("\n") for tile in row_tiles])
       for line in row_lines:
-        print "".join(line)
+        result.append("".join(line))
+
+    return "\n".join(result)
 
   def get_bounds(self):
     """ returns a tuple of tuples ((x_min, x_max), (y_min, y_max)) """
@@ -89,12 +93,10 @@ class Board:
       [(x, y+1), 'north', 'south'],
       [(x, y-1), 'south', 'north']
     ]
-    print "testing {location}".format(**locals())
 
     for neighbor_loc, my_offset, their_offset in CONNECTIONS_TO_CHECK:
       neighbor_tile = self.board.get(neighbor_loc)
       if neighbor_tile and tile.edges._asdict()[my_offset] != neighbor_tile.edges._asdict()[their_offset]:
-        print "Tile at #{location} failed due to #{neighbor_loc}".format(**locals())
         return False
     return True
 
@@ -106,7 +108,7 @@ def __test__():
     b.board[tile] = Tile.new('BBBB') # available tile
   for tile in b.available_spots_for(Tile.new('FFFF')):
     b.board[tile] = Tile.new('AAAA') # available tile
-  b.display()
+  print b.display()
 
 if __name__ == '__main__':
   __test__()
