@@ -1,0 +1,26 @@
+Tile_Path, Borders(NESW), Quantity, Features(S - shield. C - cloister, B - beginning tile), Notes
+city4, CCCC, 1, S,
+road4, RRRR, 1, , 4 separate roads.
+city3, CCFC, 3, ,
+city3s, CCFC, 1, S,
+city3r, CCRC, 1, ,
+city3sr, CCRC, 2, S,
+road3, FRRR, 4, , 3 separate roads.
+city2we, FCFC, 1, ,
+city2wes, FCFC, 2, S, these are the same city.
+road2ns, RFRF, 8, , connected
+city2nw, CFFC, 3, , connected
+city2nws, CFFC, 2, S , connected
+city2nwr, CRRC, 3, , connected
+city2nwsr, CRRC, 2, S , connected
+road2sw, FFRR, 9, , connected
+city11ne, CCFF, 2, , two separate cities
+city11we, FCFC, 3, , two separate cities
+cloisterr, FFRF, 2, C, cloister
+cloister, FFFF, 4, C, cloister
+city1, CFFF, 5, ,
+city1rse, CRRF, 3, ,
+city1rsw, CFRR, 3, ,
+city1rswe, CRRR, 3, , 3 separate roads
+city1rswe, CRRR, 3, , 3 separate roads
+city1rwe, CRFR, 4, B, one of them is starting tile
