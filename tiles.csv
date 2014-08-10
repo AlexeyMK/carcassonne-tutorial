@@ -1,4 +1,4 @@
-eele_Path, Borders(NESW), Quantity, Features(S - shield. C - cloister, B - beginning tile), Notes
+TileFile, Borders(NESW), Quantity, Features(S - shield. C - cloister. B - beginning tile), Notes
 city4, CCCC, 1, S,
 road4, RRRR, 1, , 4 separate roads.
 city3, CCFC, 3, ,

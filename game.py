@@ -1,15 +1,53 @@
-from collections import namedtuple
+from collections import namedtuple, Counter
+from csv import DictReader
+
+import random
+
 
 # clockwise order
 TileEdges = namedtuple('TileEdges', 'north east south west')
 
+class TileBag:
+  def __init__(self, csv):
+    self.bag = Counter()
+    reader = DictReader(open(csv, 'r'), fieldnames=[
+      "TileFile", "Borders", "Quantity", "Features", "Notes"])
+    reader.next()  # skip header, we've defined our own
+
+    for tile_dict in reader:
+      tile = Tile.from_csv(tile_dict)
+      quantity = int(tile_dict["Quantity"].strip())
+      self.bag[tile] = quantity
+      if "B" in tile_dict["Features"]:
+        self.first_tile = tile
+
+  def draw(self):
+    """ draw a tile
+        returns None if bag is empty
+        returns first tile first
+        TODO(AMK): replace with generator, I think
+    """
+    tiles = list(self.bag.elements())
+    if len(tiles) == 0:
+      return None
+
+    if self.first_tile:
+      chosen_tile = self.first_tile
+      self.first_tile = None  # done, we've drawn the first tile
+    else:
+      chosen_tile = random.choice(tiles)
+    self.bag[chosen_tile] -= 1
+
+    return chosen_tile
+
 class Tile:
-  def __init__(self, edges):
+  def __init__(self, edges, image=None):
     """ edges = namedtuple w/ four keys: {north, east, south, west}
         w/ values of: R (road), C ('city'), F (field)
         (+ A (available) and ' '(blank)
     """
     self.edges = edges
+    self.image = image
 
   def __str__(self):
     """initial implementation, in 3 rows"""
@@ -18,6 +56,11 @@ class Tile:
   @classmethod
   def empty(self):
     return Tile.new('    ')
+
+  @classmethod
+  def from_csv(cls, csv_dict):
+    return Tile(TileEdges(*csv_dict["Borders"].strip()),
+               csv_dict["TileFile"])
 
   @classmethod
   def new(cls, edge_str):
