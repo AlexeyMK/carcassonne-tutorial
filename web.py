@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from game import Board, Tile, TileBag
 app = Flask(__name__)
 
@@ -20,8 +20,11 @@ def all_tiles():
       if tile:
         board.board[(x,y)] = tile
 
-  return display_text(board)
+  return display_images(board)
 
+def display_images(board):
+  x_bounds, y_bounds = board.get_bounds()
+  return render_template("board.html", **locals())
 
 def display_text(board):
   return "<pre>{}</pre>".format(board.display())
