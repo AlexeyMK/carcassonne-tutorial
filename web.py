@@ -6,7 +6,7 @@ app = Flask(__name__)
 def hello():
   b = Board()
   b.board[(1, 1)] = Tile.new('FFFF')
-  return "<pre>{}</pre>".format(b.display())
+  return display_text(b)
 
 @app.route("/all-tiles")
 def all_tiles():
@@ -20,9 +20,11 @@ def all_tiles():
       if tile:
         board.board[(x,y)] = tile
 
+  return display_text(board)
+
+
+def display_text(board):
   return "<pre>{}</pre>".format(board.display())
-
-
 
 if __name__ == "__main__":
   app.run(debug=True)
