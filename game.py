@@ -91,8 +91,7 @@ class Board:
       # since we have three rows and we're still relying on print,
       # displaying gets a bit dirty
       # will get cleaner once we move to something like HTML
-      row_tiles = [self.board.get((x, y), Tile.empty())
-        for x in xrange(min_x, max_x + 1)]
+      row_tiles = [self.tile(x, y) for x in xrange(min_x, max_x + 1)]
 
       # now we have to print each of the three rows together.
       # zip to aggregate each of the top, middle, bottom rows
@@ -101,6 +100,9 @@ class Board:
         result.append("".join(line))
 
     return "\n".join(result)
+
+  def tile(self, x, y):
+    return self.board.get((x,y), Tile.empty())
 
   def get_bounds(self):
     """ returns a tuple of tuples ((x_min, x_max), (y_min, y_max)) """

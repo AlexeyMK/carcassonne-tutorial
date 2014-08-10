@@ -1,5 +1,14 @@
+<style>
+  .tile {
+    width: 80px;
+    height: 80px;
+    background-color: gray;
+  }
+</style>
 <div>{% for y in range(y_bounds[1], y_bounds[0] - 1, -1) %}
   <div>{% for x in range(x_bounds[0], x_bounds[1] + 1) %}
-    <span>{{x}} {{y}}</span>
+    <span>
+      <img class="tile" src="{{url_for("static", filename="tiles/" + (board.tile(x, y).image or "empty") + ".png")}}" />
+    </span>
   {% endfor %}</div>
 {% endfor %}</div>
