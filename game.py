@@ -26,6 +26,7 @@ class Tile:
         For example, the starting piece is Tile.new("CRFR")"""
     return Tile(TileEdges(*edge_str))
 
+
 STARTING_PIECE = Tile.new('CRFR')
 
 class Board:
@@ -41,7 +42,7 @@ class Board:
 
     # xrange is inclusive in start and exclusive in end, IE [s..e)
     # so we add +1 offset to be safe
-    for y in xrange(min_y, max_y + 1):
+    for y in xrange(max_y, min_y - 1, -1):
       # since we have three rows and we're still relying on print,
       # displaying gets a bit dirty
       # will get cleaner once we move to something like HTML
@@ -74,11 +75,36 @@ class Board:
     unnoccupied_titles_near_occupied = tiles_near_occupied - set(occupied_tiles)
     return unnoccupied_titles_near_occupied
 
+  def available_spots_for(self, tile):
+    """ where does tile X fit?
+        Note: not yet including rotations"""
+    return [spot for spot in self.available_spots() if self.tile_fits(spot, tile)]
+
+  def tile_fits(self, location, tile):
+    """ does tile T fit in location L? """
+    x, y = location
+    CONNECTIONS_TO_CHECK = [
+      [(x+1, y), 'east', 'west'],
+      [(x-1, y), 'west', 'east'],
+      [(x, y+1), 'north', 'south'],
+      [(x, y-1), 'south', 'north']
+    ]
+    print "testing {location}".format(**locals())
+
+    for neighbor_loc, my_offset, their_offset in CONNECTIONS_TO_CHECK:
+      neighbor_tile = self.board.get(neighbor_loc)
+      if neighbor_tile and tile.edges._asdict()[my_offset] != neighbor_tile.edges._asdict()[their_offset]:
+        print "Tile at #{location} failed due to #{neighbor_loc}".format(**locals())
+        return False
+    return True
+
+
 def __test__():
   b = Board()
-  b.board[(1, 0)] = Tile.new('RFFF')
   b.board[(1, 1)] = Tile.new('FFFF')
-  for tile in b.available_spots():
+  for tile in b.available_spots_for(Tile.new('CFCF')):
+    b.board[tile] = Tile.new('BBBB') # available tile
+  for tile in b.available_spots_for(Tile.new('FFFF')):
     b.board[tile] = Tile.new('AAAA') # available tile
   b.display()
 
